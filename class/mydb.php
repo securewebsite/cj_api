@@ -21,6 +21,11 @@ class mydb {
 
 		$result = mysqli_query($this->con,$sql);
 
+		if ( ! $result )
+		{
+			die(mysqli_error($this->con));
+		}
+
 		while($row = mysqli_fetch_assoc($result))
 		{
 			$item = new stdClass;
@@ -52,7 +57,7 @@ class mydb {
 		}
 
 		$sql = "INSERT INTO $table (" . implode(',', $keys) . ") VALUES (" . implode(',', $values) . ")";
-		
+
 		mysqli_query($this->con,$sql);
 		$this->_disconnect();
 	}
