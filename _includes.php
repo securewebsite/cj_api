@@ -1,9 +1,14 @@
 <?php
 
+set_time_limit(0);
+
 require_once('class/mydb.php');
 require_once('class/cj_xml_api.php');
 require_once('class/cj_advertisers.php');
 require_once('class/cj_advertisers_model.php');
+require_once('class/cj_links.php');
+require_once('class/cj_links_model.php');
+require_once('class/cj_coupon.php');
 
 /*=======================
       DEBUG FUNCTIONS
