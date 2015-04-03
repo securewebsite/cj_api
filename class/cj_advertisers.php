@@ -26,24 +26,6 @@ class cj_advertisers extends cj_xml_api {
 		return $this->advertisers;
 	}
 
-	public function _obj_exist($target, $list, $col = false)
-	{
-		if ( ! $col )
-		{
-			return false;
-		}
-
-		foreach ($list as $item)
-		{
-			if ($target->$col == $item->$col)
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	private function _call_api()
 	{
 		$result = $this->curl('https://advertiser-lookup.api.cj.com/v3/advertiser-lookup?advertiser-ids=notjoined&records-per-page=100&page-number=' . $this->page);
