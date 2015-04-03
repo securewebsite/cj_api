@@ -48,4 +48,22 @@ class cj_xml_api {
 		
 		return false;
 	}
+
+	public function _obj_exist($target, $list, $col = false)
+	{
+		if ( ! $col )
+		{
+			return false;
+		}
+
+		foreach ($list as $item)
+		{
+			if ($target->$col == $item->$col)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
 }
