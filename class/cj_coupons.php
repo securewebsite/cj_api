@@ -1,6 +1,6 @@
 <?php
 
-class cj_coupon {
+class cj_coupons {
 
 	protected $conn_id;
 	protected $server;

@@ -8,7 +8,8 @@ require_once('class/cj_advertisers.php');
 require_once('class/cj_advertisers_model.php');
 require_once('class/cj_links.php');
 require_once('class/cj_links_model.php');
-require_once('class/cj_coupon.php');
+require_once('class/cj_coupons.php');
+require_once('class/cj_coupons_model.php');
 
 /*=======================
       DEBUG FUNCTIONS
