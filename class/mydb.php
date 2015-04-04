@@ -6,13 +6,36 @@ class mydb {
 	private $user = "root";
 	private $pass = "";
 	private $db   = "cj_api";
+	private $where = array();
 	private $con;
+
+	public function _get_where($table, $where = array())
+	{
+		if (is_array($where))
+		{
+			foreach ($where as $key => $val)
+			{
+				$this->where[$key] = $val;
+			}
+		}
+
+		return _get_all($table);
+	}
 
 	public function _get_all($table, $limit = false, $page = 0)
 	{
 		$data = array();
 		$this->_connect();
 		$sql = "SELECT * FROM " . $table;
+
+		if (count($this->where))
+		{
+			$sql .= " WHERE";
+			foreach ($this->where as $key => $val)
+			{
+				$sql .=  " " . $this->_escape($key, "`") . " = " . $this->_escape($val);
+			}
+		}
 
 		if ($limit && $page)
 		{
@@ -74,6 +97,11 @@ class mydb {
 	private function _disconnect()
 	{
 		mysqli_close($this->con);
+	}
+
+	private function _escape($str, $qoute = "'")
+	{
+		return ($qoute ? $qoute : "") . mysqli_real_escape_string($this->con, $str) . ($qoute ? $qoute : "");
 	}
 
 }
