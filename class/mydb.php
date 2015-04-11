@@ -7,6 +7,7 @@ class mydb {
 	private $pass = "";
 	private $db   = "cj_api";
 	private $where = array();
+	private $queries = array();
 	private $con;
 
 	public function _get_where($table, $where = array())
@@ -42,7 +43,7 @@ class mydb {
 
 		}
 
-		$result = mysqli_query($this->con,$sql);
+		$result = $this->_mysqli_query($this->con,$sql);
 
 		if ( ! $result )
 		{
@@ -81,7 +82,7 @@ class mydb {
 
 		$sql = "INSERT INTO $table (" . implode(',', $keys) . ") VALUES (" . implode(',', $values) . ")";
 
-		mysqli_query($this->con,$sql);
+		$this->_mysqli_query($this->con,$sql);
 		$this->_disconnect();
 	}
 
@@ -105,9 +106,20 @@ class mydb {
 		$where_arr = implode(",", $where_arr);
 
 		$sql = "UPDATE $table SET $new_value_arr WHERE $where_arr";
-		
-		mysqli_query($this->con,$sql);
+
+		$this->_mysqli_query($this->con,$sql);
 		$this->_disconnect();
+	}
+
+	public function _last_query()
+	{
+		return last($this->queries);
+	}
+
+	private function _mysqli_query($con, $sql)
+	{
+		$this->queries[] = $sql;
+		return mysqli_query($con, $sql);
 	}
 
 	private function _connect()
