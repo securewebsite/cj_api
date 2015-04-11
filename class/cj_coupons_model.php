@@ -11,6 +11,18 @@ class cj_coupons_model extends mydb {
 		return $this->_get_all($this->coupons);
 	}
 
+	public function get_by_id($aid)
+	{
+		$result = $this->_get_where($this->coupons, array('aid' => $aid));
+
+		if (count($result))
+		{
+			return $result[0];
+		}
+
+		return false;
+	}
+
 	public function insert_batch($coupons)
 	{
 		if (is_array($coupons) && count($coupons))
