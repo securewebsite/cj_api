@@ -87,6 +87,7 @@ class mydb {
 
 	public function _update($table, $new_value, $where)
 	{
+		$this->_connect();
 		$new_value_arr = array();
 		$where_arr = array();
 
@@ -104,7 +105,9 @@ class mydb {
 		$where_arr = implode(",", $where_arr);
 
 		$sql = "UPDATE $table SET $new_value_arr WHERE $where_arr";
-		dd($sql);
+		
+		mysqli_query($this->con,$sql);
+		$this->_disconnect();
 	}
 
 	private function _connect()
