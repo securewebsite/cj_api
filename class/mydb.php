@@ -27,20 +27,27 @@ class mydb {
 	{
 		$data = array();
 		$this->_connect();
-		$sql = "SELECT * FROM " . $table;
+
+		$where_arr = array();
 
 		if (count($this->where))
 		{
-			$sql .= " WHERE";
 			foreach ($this->where as $key => $val)
 			{
-				$sql .=  " " . $this->_escape($key, "`") . " = " . $this->_escape($val);
+				$where_arr[] = $this->_escape($key, "`") . " = " . $this->_escape($val);
 			}
 		}
 
 		if ($limit && $page)
 		{
 
+		}
+
+		$sql = "SELECT * FROM " . $table;
+
+		if (count($where_arr))
+		{
+			$sql .= " WHERE " . implode(",", $where_arr);
 		}
 
 		$result = $this->_mysqli_query($this->con,$sql);
@@ -72,7 +79,6 @@ class mydb {
 
 		$keys = array();
 		$values = array();
-
 
 		foreach ($data as $key => $val)
 		{
@@ -113,7 +119,7 @@ class mydb {
 
 	public function _last_query()
 	{
-		return last($this->queries);
+		return end($this->queries);
 	}
 
 	private function _mysqli_query($con, $sql)
@@ -133,6 +139,7 @@ class mydb {
 
 	private function _disconnect()
 	{
+		$this->where = array();
 		mysqli_close($this->con);
 	}
 
