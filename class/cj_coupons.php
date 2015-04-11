@@ -270,7 +270,7 @@ class cj_coupons {
 
 				foreach ($this->capture_cols as $capture_col)
 				{
-					$cols_idx[$capture_col] = array_search($capture_col, $file_cols);
+					$cols_idx[array_search($capture_col, $file_cols)] = $capture_col;
 				}
 
 				$this->cols_idx = $cols_idx;
@@ -304,11 +304,18 @@ class cj_coupons {
 			$counter++;
 		}
 
+		$coupon = array();
+
 		$this->current_coupon_idx++;
 
 		if ( ! empty($line))
 		{
-			return $line;
+			foreach ($this->cols_idx as $idx => $col)
+			{
+				$coupon[strtolower($col)] = isset($line[$idx]) ? $line[$idx] : '';
+			}
+
+			return $coupon;
 		}
 
 		return false;

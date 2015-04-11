@@ -4,6 +4,7 @@ class cj_coupons_model extends mydb {
 
 	protected $coupons = 'cj_coupons';
 	protected $config = 'cj_config';
+	protected $timestamp_col_key = 'coupon_last_timestamp';
 
 	public function get_all()
 	{
@@ -27,7 +28,28 @@ class cj_coupons_model extends mydb {
 
 	public function get_last_timestamp()
 	{
-		
+		$data = $this->_get_where($this->config, array('key' => $this->timestamp_col_key));
+
+		if (count($data))
+		{
+			return $data[0]->value;
+		}
+
+		return false;
+	}
+
+	public function update_timestamp($timestamp)
+	{
+		$last_timestamp = $this->get_last_timestamp();
+
+		if ($last_timestamp === false)
+		{
+			$this->_insert($this->config, array('value' => $timestamp, 'key' => $this->timestamp_col_key));
+		}
+		else
+		{
+			$this->_update($this->config, array('value' => $timestamp), array('key' => $this->timestamp_col_key));
+		}
 	}
 
 }
