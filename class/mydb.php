@@ -19,7 +19,7 @@ class mydb {
 			}
 		}
 
-		return _get_all($table);
+		return $this->_get_all($table);
 	}
 
 	public function _get_all($table, $limit = false, $page = 0)
@@ -83,6 +83,28 @@ class mydb {
 
 		mysqli_query($this->con,$sql);
 		$this->_disconnect();
+	}
+
+	public function _update($table, $new_value, $where)
+	{
+		$new_value_arr = array();
+		$where_arr = array();
+
+		foreach ($new_value as $key => $value)
+		{
+			$new_value_arr[] = $this->_escape($key, "`") . " = " . $this->_escape($value);
+		}
+
+		foreach ($where as $key => $value)
+		{
+			$where_arr[] = $this->_escape($key, "`") . " = " . $this->_escape($value);
+		}
+
+		$new_value_arr = implode(",", $new_value_arr);
+		$where_arr = implode(",", $where_arr);
+
+		$sql = "UPDATE $table SET $new_value_arr WHERE $where_arr";
+		dd($sql);
 	}
 
 	private function _connect()
