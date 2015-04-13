@@ -23,6 +23,35 @@ class cj_coupons_model extends mydb {
 		return false;
 	}
 
+	public function insert($coupon_item)
+	{
+		if ( ! isset($coupon_item['aid']) )
+		{
+			return false;
+		}
+
+		$exist = $this->get_by_id($coupon_item['aid']);
+
+		if ($exist)
+		{
+			return false;
+		}
+
+		if (isset($coupon_item['promotionstartdate']))
+		{
+			$coupon_item['promotionstartdate'] = date('Y-m-d H:i:s', strtotime($coupon_item['promotionstartdate']));
+		}
+
+		if (isset($coupon_item['promotionenddate']))
+		{
+			$coupon_item['promotionenddate'] = date('Y-m-d H:i:s', strtotime($coupon_item['promotionenddate']));
+		}
+
+		$this->_insert($this->coupons, $coupon_item);
+
+		return true;
+	}
+
 	public function insert_batch($coupons)
 	{
 		if (is_array($coupons) && count($coupons))

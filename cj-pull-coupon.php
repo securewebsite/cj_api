@@ -5,13 +5,11 @@ require_once('_includes.php');
 $cj_coupons = new cj_coupons;
 $cj_coupons_model = new cj_coupons_model;
 
-//$cj_coupons->connect('datatransfer.cj.com', '518576', '4wddBRC=');
+$cj_coupons->connect('datatransfer.cj.com', '518576', '4wddBRC=');
 
 $cj_coupons_model->update_timestamp('20150327');
 
 $last_timestamp = $cj_coupons_model->get_last_timestamp();
-
-dd($last_timestamp);
 
 $num_files = $cj_coupons->get_coupon_data($last_timestamp);
 
@@ -26,7 +24,8 @@ if ($num_files)
 		//loop through the items in each file
 		while($coupon_item = $cj_coupons->fetch_single_coupon())
 		{
-			print_ln(print_r($coupon_item,1));
+			$insert_result = $cj_coupons_model->insert($coupon_item);
+			print_ln("Inserting aid " . $coupon_item['aid'] . " " . ($insert_result ? "ok" : "fail"));
 		}
 
 		$cj_coupons_model->update_timestamp($fetch_file_result['timestamp']);
